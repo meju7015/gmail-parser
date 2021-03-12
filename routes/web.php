@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\GmailClient;
+use App\Services\GoogleClient;
 use Illuminate\Support\Facades\Route;
 
 /*
