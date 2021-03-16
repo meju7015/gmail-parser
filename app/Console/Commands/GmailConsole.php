@@ -83,7 +83,7 @@ class GmailConsole extends Command
                     ]
                 ]);
 
-                Log::info(`{$body['job']} :: 캘린더에 추가됨. - `.Carbon::now()->format('Y-m-d H:i:s'));
+                Log::info($body['job'] .' :: 캘린더에 추가됨. - ' . Carbon::now()->format('Y-m-d H:i:s'));
             }
         }
 
