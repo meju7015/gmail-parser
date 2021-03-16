@@ -18,7 +18,8 @@ class GmailClientController extends Controller
         $client = new GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
 
         $prev = $client->getCacheInbox();
-        $next = $client->flatArray($client->getThreads(5)->getThreads());
+        $origin = $client->flatArray($client->getThreads(5)->getThreads());
+        $next = $origin;
 
         if ($prev === null) {
             $client->setCacheInbox($next);
@@ -61,6 +62,7 @@ class GmailClientController extends Controller
             }
         }
 
+        $client->setCacheInbox($origin);
         Log::info('******** 스케쥴링 끝 ********');
     }
 }
