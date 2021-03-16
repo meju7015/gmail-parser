@@ -44,30 +44,30 @@ class GmailConsole extends Command
         $client = new GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
 
         $prev = $client->getCacheInbox();
-        $next = $client->flatArray($client->getThreads(5)->getThreads());
+        $next = $client->getThreads(5)->getThreads();
 
         if ($prev === null) {
             $client->setCacheInbox($next);
             $prev = $client->getCacheInbox();
         }
 
-        Log::info('******** 스케쥴링 시작 ********');
+        Log::info('['.Carbon::now()->format('Y-m-d H:i:s').'] ******** 스케쥴링 시작 ********');
 
         foreach ($prev as $pk => $pi) {
             foreach ($next as $ni) {
                 if ($pi->id === $ni->id) {
-                    unset($prev[$pk]);
+                    unset($next[$pk]);
                 }
             }
         }
 
-        foreach ($prev as $key => $item) {
+        foreach ($next as $key => $item) {
             $parser = new GmailParser(
                 $client,
                 $item->id
             );
 
-            $body = $parser->parseMessageBodyToFormat();
+            $body = $parser->parseThreadToMessageBody();
 
             if (!empty($body['job'])) {
                 $client->createEvent([
@@ -87,7 +87,7 @@ class GmailConsole extends Command
             }
         }
 
-        $client->setCacheInbox($next);
-        Log::info('******** 스케쥴링 끝 ********');
+        /*$client->setCacheInbox($next);*/
+        Log::info('['.Carbon::now()->format('Y-m-d H:i:s').'] ******** 스케쥴링 끝 ********');
     }
 }
