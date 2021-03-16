@@ -18,6 +18,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('gmail:client', function (\App\Http\Controllers\GmailClientController $gmailClient) {
+Artisan::command('gmail:getThread {id}', function ($id) {
     $client = new \App\Services\GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
+    $parser = new \App\Services\GmailParser(
+        $client,
+        $id
+    );
+
+    dump($parser->parseThreadToMessageHeader());
 });

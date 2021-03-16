@@ -74,6 +74,11 @@ class GmailParser
         ];
     }
 
+    public function getUser($userString)
+    {
+        return explode('\<', $userString)[1];
+    }
+
     public function parseThreadToMessageBody(): array
     {
         $messages = $this->thread;
@@ -170,21 +175,33 @@ class GmailParser
             foreach ($headers as $header) {
                 switch ($header->name) {
                     case self::GMAIL_HEADER_TO:
+                        $arr = $this->compactString($header->value);
+                        foreach ($arr as $key =>$item) {
+                            $arr[$key] = str_replace(">", "", explode("<", $item)[1]);
+                        }
                         $this->user = array_merge(
                             $this->user,
-                            $this->compactString($header->value)
+                            $arr
                         );
                         break;
                     case self::GMAIL_HEADER_CC:
+                        $arr = $this->compactString($header->value);
+                        foreach ($arr as $key =>$item) {
+                            $arr[$key] = str_replace(">", "", explode("<", $item)[1]);
+                        }
                         $this->cc = array_merge(
                             $this->cc,
-                            $this->compactString($header->value)
+                            $arr
                         );
                         break;
                     case self::GMAIL_HEADER_BCC:
+                        $arr = $this->compactString($header->value);
+                        foreach ($arr as $key =>$item) {
+                            $arr[$key] = str_replace(">", "", explode("<", $item)[1]);
+                        }
                         $this->bcc = array_merge(
                             $this->bcc,
-                            $this->compactString($header->value)
+                            $arr
                         );
                         break;
                     case self::GMAIL_HEADER_SUBJECT:

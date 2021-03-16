@@ -76,7 +76,14 @@ class GmailConsole extends Command
 
             if (!empty($body['job'])) {
 
-                $header = $parser->parseThreadToMessageHeader();
+                $headers = $parser->parseThreadToMessageHeader();
+                $attendees = [];
+
+                foreach ($headers['user'] as $user) {
+                    array_push($attendees, [
+                        'email' => $user
+                    ]);
+                }
 
                 $result = $client->createEvent([
                     'summary' => $body['job'],
@@ -89,9 +96,7 @@ class GmailConsole extends Command
                         'dateTime' => Carbon::make($body['work_date'][1])->format('Y-m-d\TH:i:s'),
                         'timeZone' => 'America/Los_Angeles'
                     ],
-                    'attendees' => [
-
-                    ]
+                    'attendees' => $attendees
                 ]);
 
                 $body['link'] = $result->htmlLink;
