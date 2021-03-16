@@ -87,7 +87,7 @@ class GmailConsole extends Command
             }
         }
 
-        /*$client->setCacheInbox($next);*/
+        $client->setCacheInbox($next);
         Log::info('['.Carbon::now()->format('Y-m-d H:i:s').'] ******** 스케쥴링 끝 ********');
     }
 }
