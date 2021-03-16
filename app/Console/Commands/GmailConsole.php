@@ -64,7 +64,7 @@ class GmailConsole extends Command
             }
         }
 
-        Log::info(print_r($next));
+        Log::info(json_encode($next));
 
         foreach ($next as $key => $item) {
             $parser = new GmailParser(
