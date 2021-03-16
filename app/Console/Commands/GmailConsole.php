@@ -53,8 +53,8 @@ class GmailConsole extends Command
 
         Log::info('['.Carbon::now()->format('Y-m-d H:i:s').'] ******** 스케쥴링 시작 ********');
 
-        foreach ($prev as $pk => $pi) {
-            foreach ($next as $ni) {
+        foreach ($next as $pk => $pi) {
+            foreach ($prev as $ni) {
                 if ($pi->id === $ni->id) {
                     unset($next[$pk]);
                 }
