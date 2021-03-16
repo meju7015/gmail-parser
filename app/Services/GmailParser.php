@@ -104,7 +104,11 @@ class GmailParser
             }
         }
 
-        return $this->data;
+        return [
+            'work_date' => $this->workDate,
+            'job' => $this->job,
+            'issue' => $this->issue
+        ];
     }
 
     public function replace($string, $type)

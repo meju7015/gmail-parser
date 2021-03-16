@@ -5,6 +5,7 @@ namespace App\Services;
 use Google_Client;
 use Google_Service_Gmail;
 use Google_Service_Calendar;
+use Illuminate\Support\Facades\Redis;
 
 class GoogleClient
 {
@@ -39,32 +40,32 @@ class GoogleClient
     {
         /**
          * $event = new Google_Service_Calendar_Event(array(
-            'summary' => 'Google I/O 2015',
-            'location' => '800 Howard St., San Francisco, CA 94103',
-            'description' => 'A chance to hear more about Google\'s developer products.',
-            'start' => array(
-            'dateTime' => '2015-05-28T09:00:00-07:00',
-            'timeZone' => 'America/Los_Angeles',
-            ),
-            'end' => array(
-            'dateTime' => '2015-05-28T17:00:00-07:00',
-            'timeZone' => 'America/Los_Angeles',
-            ),
-            'recurrence' => array(
-            'RRULE:FREQ=DAILY;COUNT=2'
-            ),
-            'attendees' => array(
-            array('email' => 'lpage@example.com'),
-            array('email' => 'sbrin@example.com'),
-            ),
-            'reminders' => array(
-            'useDefault' => FALSE,
-            'overrides' => array(
-            array('method' => 'email', 'minutes' => 24 * 60),
-            array('method' => 'popup', 'minutes' => 10),
-            ),
-            ),
-            ));
+         * 'summary' => 'Google I/O 2015',
+         * 'location' => '800 Howard St., San Francisco, CA 94103',
+         * 'description' => 'A chance to hear more about Google\'s developer products.',
+         * 'start' => array(
+         * 'dateTime' => '2015-05-28T09:00:00-07:00',
+         * 'timeZone' => 'America/Los_Angeles',
+         * ),
+         * 'end' => array(
+         * 'dateTime' => '2015-05-28T17:00:00-07:00',
+         * 'timeZone' => 'America/Los_Angeles',
+         * ),
+         * 'recurrence' => array(
+         * 'RRULE:FREQ=DAILY;COUNT=2'
+         * ),
+         * 'attendees' => array(
+         * array('email' => 'lpage@example.com'),
+         * array('email' => 'sbrin@example.com'),
+         * ),
+         * 'reminders' => array(
+         * 'useDefault' => FALSE,
+         * 'overrides' => array(
+         * array('method' => 'email', 'minutes' => 24 * 60),
+         * array('method' => 'popup', 'minutes' => 10),
+         * ),
+         * ),
+         * ));
          */
         $cal = $this->service->calendar;
         $event = $cal->events->insert($this->calendarID, new \Google_Service_Calendar_Event($event));
@@ -133,9 +134,9 @@ class GoogleClient
         return $service;
     }
 
-    public function getThreads()
+    public function getThreads($length)
     {
-        return $this->service->gmail->users_threads->listUsersThreads($this->user);
+        return $this->service->gmail->users_threads->listUsersThreads($this->user, ['maxResults' => $length]);
     }
 
     public function getMessages()
@@ -143,13 +144,28 @@ class GoogleClient
         return $this->service->gmail->users_messages->listUsersMessages($this->user);
     }
 
-    public function getThread(string $id)
+    public function getThread($id)
     {
         return $this->service->gmail->users_threads->get($this->user, $id);
     }
 
-    public function getMessage(string $id)
+    public function getMessage($id)
     {
         return $this->service->gmail->users_messages->get($this->user, $id);
+    }
+
+    public function flatArray(array $arr)
+    {
+        return json_decode(json_encode($arr));
+    }
+
+    public function getCacheInbox()
+    {
+        return json_decode(Redis::get('gmail.inbox.list'));
+    }
+
+    public function setCacheInbox($data)
+    {
+        return Redis::set('gmail.inbox.list', json_encode($data));
     }
 }
