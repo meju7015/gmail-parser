@@ -18,7 +18,7 @@ class GmailClientController extends Controller
         $client = new GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
 
         $prev = $client->getCacheInbox();
-        $origin = $client->flatArray($client->getThreads(5)->getThreads());
+        $origin = $client->getThreads(5)->getThreads();
         $next = $origin;
 
         if ($prev === null) {
