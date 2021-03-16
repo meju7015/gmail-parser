@@ -69,6 +69,7 @@ class GoogleClient
          */
         $cal = $this->service->calendar;
         $event = $cal->events->insert($this->calendarID, new \Google_Service_Calendar_Event($event));
+        return $event;
     }
 
     public function setClient(Google_Client $client = null): void

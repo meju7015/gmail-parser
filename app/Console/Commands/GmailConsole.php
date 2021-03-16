@@ -7,6 +7,7 @@ use App\Services\GoogleClient;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Services\WebhookService;
 
 class GmailConsole extends Command
 {
@@ -70,7 +71,7 @@ class GmailConsole extends Command
             $body = $parser->parseThreadToMessageBody();
 
             if (!empty($body['job'])) {
-                $client->createEvent([
+                $result = $client->createEvent([
                     'summary' => $body['job'],
                     'description' => $body['issue'],
                     'start' => [
@@ -82,6 +83,10 @@ class GmailConsole extends Command
                         'timeZone' => 'America/Los_Angeles'
                     ]
                 ]);
+
+                $body['link'] = $result->htmlLink;
+                $sender = new WebhookService();
+                $sender->send($body);
 
                 Log::info($body['job'] .' :: 캘린더에 추가됨. - ' . Carbon::now()->format('Y-m-d H:i:s'));
             }
