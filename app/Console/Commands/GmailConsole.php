@@ -87,6 +87,7 @@ class GmailConsole extends Command
             }
         }
 
+        $client->setCacheInbox($next);
         Log::info('******** 스케쥴링 끝 ********');
     }
 }
