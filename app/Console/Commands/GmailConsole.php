@@ -44,8 +44,9 @@ class GmailConsole extends Command
     {
         $client = new GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
 
-        $prev = [];//$client->getCacheInbox();
-        $next = $client->getThreads(5)->getThreads();
+        $prev = $client->getCacheInbox();
+        $origin = $client->getThreads(5)->getThreads();
+        $next = $origin;
 
 
         if ($prev === null) {
@@ -99,7 +100,7 @@ class GmailConsole extends Command
             }
         }
 
-        $client->setCacheInbox($client->getThreads(5)->getThreads());
+        $client->setCacheInbox($origin);
         Log::info('['.Carbon::now()->format('Y-m-d H:i:s').'] ******** 스케쥴링 끝 ********');
     }
 }
