@@ -19,5 +19,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('gmail:client', function (\App\Http\Controllers\GmailClientController $gmailClient) {
-    $client = new \App\Services\GoogleClient();
+    $client = new \App\Services\GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
 });
