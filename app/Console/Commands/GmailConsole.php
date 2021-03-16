@@ -44,8 +44,9 @@ class GmailConsole extends Command
     {
         $client = new GoogleClient('me', '6ohc7reoj9nbp5jccs2ldkknl4@group.calendar.google.com');
 
-        $prev = $client->getCacheInbox();
+        $prev = [];//$client->getCacheInbox();
         $next = $client->getThreads(5)->getThreads();
+
 
         if ($prev === null) {
             $client->setCacheInbox($next);
@@ -71,6 +72,9 @@ class GmailConsole extends Command
             $body = $parser->parseThreadToMessageBody();
 
             if (!empty($body['job'])) {
+
+                $header = $parser->parseThreadToMessageHeader();
+
                 $result = $client->createEvent([
                     'summary' => $body['job'],
                     'description' => $body['issue'],
@@ -81,6 +85,9 @@ class GmailConsole extends Command
                     'end' => [
                         'dateTime' => Carbon::make($body['work_date'][1])->format('Y-m-d\TH:i:s'),
                         'timeZone' => 'America/Los_Angeles'
+                    ],
+                    'attendees' => [
+
                     ]
                 ]);
 
