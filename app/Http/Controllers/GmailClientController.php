@@ -20,6 +20,8 @@ class GmailClientController extends Controller
         $prev = $client->getCacheInbox();
         $next = $client->flatArray($client->getThreads(5)->getThreads());
 
+        dump($prev, $next);
+
         foreach ($prev as $pk => $pi) {
             foreach ($next as $ni) {
                 if ($pi->id === $ni->id) {
