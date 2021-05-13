@@ -23,7 +23,7 @@ Route::prefix('/v1')->group(function () {
 
     Route::get('/todos/{userId}', 'App\Http\Controllers\TodoApiController@list');
 
-    Route::post('/todos', 'App\Http\Controllers\TodoApiController@store');
+    Route::post('/todos/{userId}', 'App\Http\Controllers\TodoApiController@store');
 
     Route::patch('/todos/{id}', 'App\Http\Controllers\TodoApiController@update');
 

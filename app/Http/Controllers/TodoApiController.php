@@ -24,10 +24,10 @@ class TodoApiController extends Controller
         ]);
     }
 
-    public function store(TodoStoreRequest $request): \Illuminate\Http\JsonResponse
+    public function store($userId, TodoStoreRequest $request): \Illuminate\Http\JsonResponse
     {
         $todo = new Todo();
-        $todo->user_id = $request->post('user_id');
+        $todo->user_id = $userId;
         $todo->text = $request->post('text');
         $result = $todo->save();
 

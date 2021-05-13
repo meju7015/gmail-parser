@@ -28,7 +28,6 @@ class TodoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required',
             'text' => 'required',
         ];
     }
@@ -36,7 +35,6 @@ class TodoStoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => '사용자 식별값이 누락되었습니다.',
             'text.required' => '할일을 입력해 주세요.'
         ];
     }
