@@ -16,11 +16,11 @@ class TodoApiController extends Controller
         $this->todos = $todos;
     }
 
-    public function list(): \Illuminate\Http\JsonResponse
+    public function list($userId): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'success' => true,
-            'data' => $this->todos->get()->toArray()
+            'data' => $this->todos->where('user_id', $userId)->get()->toArray()
         ]);
     }
 
