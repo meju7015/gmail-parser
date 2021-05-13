@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
 
-    Route::get('/todos/{$userId}', 'App\Http\Controllers\TodoApiController@list');
+    Route::get('/todos/{userId}', 'App\Http\Controllers\TodoApiController@list');
 
     Route::post('/todos', 'App\Http\Controllers\TodoApiController@store');
 
