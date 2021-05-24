@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
-
 Route::prefix('/v1')->group(function () {
+
+    Route::post('/user', 'App\Http\Controllers\UserApiController@store');
 
     Route::get('/todos/{userId}', 'App\Http\Controllers\TodoApiController@list');
 
